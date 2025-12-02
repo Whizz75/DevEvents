@@ -1,8 +1,9 @@
 import { notFound } from "next/navigation";
 import Image from "next/image";
+import cacheLife from "next/cache";
 
 import { EventCard } from "@/components/EventCard";
-import { BookEvent } from "@/components/BookEvent";
+import BookEvent from "@/components/BookEvent";
 import IEvents from "@/database/event.model";
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
@@ -28,12 +29,14 @@ const EventAgenda = ({ agendaItems }: { agendaItems: string[] }) => (
 const EventTags = ({ tags }: { tags: string[] }) => (
   <div className="flex flex-row gap-1.5 flex-wrap">
       {tags.map((tag) => (
-        <div className="pill" key={tag}>{tag}</duv>
+        <div className="pill" key={tag}>{tag}</div>
       ))}
   </div>
 )
 
 const EventDetailsPage = async ({ params }: { params: Promise<{ slug: string }>}) => {
+  'use cache';
+  cacheLife('hours');
   const { slug } = await params;
   
   let event;
@@ -110,7 +113,7 @@ const EventDetailsPage = async ({ params }: { params: Promise<{ slug: string }>}
               <p className="text-sm">Be the first to book your spot!</p>
             )}
             
-            <BookEvent />
+            <BookEvent eventID={event._id} slug={event.slug} />
           </div>
         </aside>
       </div>

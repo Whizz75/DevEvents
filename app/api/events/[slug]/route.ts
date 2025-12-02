@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 
 import connectDB from "@/lib/mongodb";
+import { IEvent, Event } from "@/database/event.model";
 
 type RouteParams = {
   params: Promise<{
